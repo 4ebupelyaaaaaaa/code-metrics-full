@@ -1,0 +1,18 @@
+.layout {
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
+.content {
+  padding: 20px;
+}
+
+.footer {
+  text-align: center;
+  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.05);
+  mix-blend-mode: lighten;
+  color: var(--foreground);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}

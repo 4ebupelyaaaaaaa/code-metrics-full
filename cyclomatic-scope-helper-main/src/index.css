@@ -1,0 +1,37 @@
+:root {
+  --background: #060823;
+  --foreground: #ffffff;
+  --primary: #646cff;
+  --border: #ffffff;
+  --radius: 0.5rem;
+  --color-bg-primary: #060823;
+  --color-bg-secondary: rgba(6, 8, 35, 0.44);
+  --color-bg-card: #0d0f2a;
+  --color-text: #ffffff;
+  --color-primary: rgba(157, 220, 229, 0.7);
+  --color-primary-hover: #4d97d8;
+  --color-def-butt: #191b4a;
+  --color-card-border: rgba(255, 255, 255, 0.15);
+  --color-highlighted: #353a76;
+  --radius-base: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 30px;
+  --font-family: "Inter", sans-serif;
+  --second-family: "Crimson Text", sans-serif;
+  --third-family: "Anonymous Pro", sans-serif;
+  --font3: "Source Serif Pro", sans-serif;
+  --font4: "Roboto Mono", sans-serif;
+  --font5: "Montserrat", sans-serif;
+  --font6: "IBM Plex Mono", sans-serif;
+}
+
+html,
+body,
+#root {
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+}

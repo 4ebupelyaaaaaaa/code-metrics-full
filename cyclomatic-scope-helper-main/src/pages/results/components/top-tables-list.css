@@ -1,0 +1,14 @@
+.tables-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.table-block {
+  flex: 1 1 500px;
+  min-width: 300px;
+}
+
+.table-label {
+  text-align: center;
+}

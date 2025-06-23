@@ -1,0 +1,43 @@
+/* src/pages/results/components/InfoCardList.css */
+
+.card-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 24px !important;
+}
+
+/* Когда одна карточка — растягиваем на всю ширину контейнера */
+.card-list:not(.multiple) .card-block {
+  flex: 1 1 100% !important;
+  max-width: none !important;
+}
+
+/* Когда несколько карточек — выводим их в ряд и ограничиваем ширину */
+.card-list.multiple .card-block {
+  flex: 1 1 200px !important;
+  min-width: 180px !important;
+  max-width: 300px !important;
+}
+
+.metric-value {
+  font-size: 48px;
+  font-weight: bold;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.metric-value.green {
+  color: #4caf50;
+}
+.metric-value.yellow {
+  color: #ffc107;
+}
+.metric-value.red {
+  color: #f44336;
+}
+
+.metric-desc {
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}

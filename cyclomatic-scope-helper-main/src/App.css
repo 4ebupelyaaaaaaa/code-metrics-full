@@ -1,0 +1,118 @@
+.ant-btn {
+  width: 100%;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 16px 24px;
+  border-radius: 25px;
+  transition: all 0.3s ease-in-out;
+}
+
+.ant-btn-default {
+  background-color: var(--color-primary) !important;
+  color: #060823 !important;
+  border: none;
+}
+
+.ant-btn-default:hover,
+.ant-btn-default:active {
+  background-color: rgba(157, 220, 229, 1) !important;
+  color: #060823 !important;
+}
+
+.ant-btn-primary {
+  background: #191b4a;
+  color: #ffffff;
+  border: none;
+}
+
+.metric-btn,
+.ant-btn-primary {
+  width: 100%;
+  max-width: 100%;
+  white-space: normal;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.ant-btn-primary:hover {
+  background: #ffffff !important;
+  color: #060823 !important;
+}
+
+.ant-btn-primary.active {
+  background: #ffffff !important;
+  color: #060823 !important;
+}
+
+.metric-btn {
+  background: rgba(157, 220, 229, 0.7);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.metric-btn:hover {
+  background: #9ddce5;
+}
+
+.metric-btn.active {
+  background: #9ddce5 !important;
+}
+
+.ant-card.custom-border {
+  border: 30px solid #0d0f2a;
+  border-radius: 30px;
+  background-color: rgba(6, 8, 35, 0.44);
+}
+
+.ant-card.transparent {
+  background-color: #0d0f2a;
+  border-radius: 20px;
+  border: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: stretch;
+}
+
+.ant-input {
+  background-color: #191b4a !important;
+  color: #ffffff !important;
+  border: none;
+}
+
+.ant-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.ant-input-affix-wrapper {
+  background-color: #191b4a !important;
+  color: #ffffff !important;
+  border: none;
+}
+
+.ant-input-password-icon {
+  color: #ffffff;
+}
+
+.ant-modal .ant-modal-close {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.ant-tabs-nav {
+  border-bottom: 1px solid #ffffff !important;
+}
+
+.ant-tabs-ink-bar {
+  background-color: #9ddce5 !important;
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #9ddce5 !important;
+  font-weight: 500;
+}
+
+:where(.ant-tabs-tab) .ant-tabs-tab-btn {
+  color: #ffffff !important;
+  font-weight: 500;
+}

@@ -1,0 +1,58 @@
+.custom-table-wrapper {
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #0e112f;
+}
+
+.custom-table-wrapper .ant-table {
+  background-color: transparent !important;
+  color: white;
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+.ant-table-container {
+  background: transparent;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.ant-table-thead > tr > th {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  color: black !important;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.ant-table-body {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+.ant-table-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ant-table-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+}
+
+.ant-table-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ant-table-body::-webkit-scrollbar-button {
+  display: none;
+}
+
+.ant-table-tbody > tr > td {
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid white;
+  color: white;
+  height: 56px;
+}
+
+.ant-table-tbody > tr.ant-table-row:hover > td {
+  background: rgba(255, 255, 255, 0.2) !important;
+}

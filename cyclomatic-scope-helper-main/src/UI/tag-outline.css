@@ -1,0 +1,23 @@
+.tag-outline {
+  max-width: 100%;
+  padding: 10px 24px;
+  border-radius: 30px;
+  display: inline-block;
+  border: none;
+  font-family: var(--second-family);
+  font-weight: 400;
+  font-size: 18px;
+  text-align: center;
+  color: #fff;
+  word-break: break-word;
+  white-space: normal;
+  line-height: 1.2;
+}
+
+.tag-outline.light {
+  background-color: rgba(157, 220, 229, 0.7);
+}
+
+.tag-outline.dark {
+  background: #101233;
+}

@@ -1,0 +1,14 @@
+.charts-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 24px !important;
+}
+
+.chart-block {
+  flex: 1 1 500px !important;
+  min-width: 300px !important;
+}
+
+.chart-label {
+  text-align: center;
+}

@@ -1,0 +1,14 @@
+.custom-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  color: var(--foreground);
+  display: flex; /* делаем саму карточку флекс-контейнером */
+  flex-direction: column;
+  height: 100%; /* карточка займёт всю доступную высоту родителя */
+}
+
+.card-content {
+  flex: 1; /* а её содержимое — растянется по высоте */
+  display: flex;
+  flex-direction: column;
+}

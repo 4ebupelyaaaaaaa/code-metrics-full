@@ -1,0 +1,58 @@
+.toolbar-header {
+  padding: 0 70px;
+  margin: 40px 100px;
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.1);
+  mix-blend-mode: lighten;
+}
+
+.toolbar-logo {
+  height: 30px;
+  display: block;
+}
+
+.toolbar-login {
+  color: var(--color-text) !important;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.toolbar-login:hover {
+  color: #30849c !important;
+}
+
+.toolbar-user-icon {
+  color: var(--color-text);
+  font-size: 25px;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolbar-user-icon:hover {
+  color: #30849c !important;
+}
+
+@media (max-width: 768px) {
+  .toolbar-header {
+    padding: 0 40px;
+    margin: 20px 40px;
+  }
+
+  .toolbar-logo {
+    height: 24px;
+  }
+}
+
+@media (max-width: 530px) {
+  .toolbar-header {
+    padding: 0 20px;
+    margin: 10px 20px;
+  }
+
+  .toolbar-logo {
+    height: 20px;
+  }
+}

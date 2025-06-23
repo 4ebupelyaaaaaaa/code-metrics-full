@@ -1,0 +1,43 @@
+.user-modal .ant-modal-content {
+  background-color: #0e112f;
+  border-radius: 16px;
+}
+
+.user-modal-header {
+  margin-bottom: 24px;
+  padding-top: 25px;
+}
+
+.user-modal-username {
+  font-size: 18px;
+  color: white;
+}
+
+.user-modal-title {
+  margin: 0;
+}
+
+.user-modal-history-title {
+  color: white;
+  margin-bottom: 12px;
+}
+
+.user-modal-filename {
+  color: white;
+  margin: 0;
+}
+
+.user-modal-filename-icon {
+  margin-right: 8px;
+}
+
+.user-modal-date {
+  color: white;
+  font-size: 13px;
+  padding-left: 32px;
+}
+
+.user-modal-download-link > .anticon {
+  font-size: 22px;
+  color: #ffffffcc;
+}
