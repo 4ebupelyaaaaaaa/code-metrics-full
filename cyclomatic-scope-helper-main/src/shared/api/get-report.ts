@@ -1,5 +1,5 @@
 // src/shared/api/get-report.ts
-import axios from "axios";
+import api from "./axios";
 import type { ReportPayload } from "@/utils/build-report-payload";
 
 export interface AnalysisResponse {
@@ -17,7 +17,7 @@ export async function fetchAnalysisReport(
   formData.append("archive", archive);
   formData.append("options", JSON.stringify(options));
 
-  const { data } = await axios.post<AnalysisResponse>(
+  const { data } = await api.post<AnalysisResponse>(
     "/api/report/report",
     formData,
     { headers: { "Content-Type": "multipart/form-data" } }
