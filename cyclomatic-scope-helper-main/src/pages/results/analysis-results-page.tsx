@@ -9,11 +9,12 @@ import DistributionChartsList from "./components/distribution-charts-list";
 import { sections } from "./sections";
 import "./results-page.css";
 import InfoCard from "@/UI/info-card/info-card";
+import { API_BASE } from "@/shared/constants";
 
 export default function ResultsPage() {
   const { state } = useLocation();
   const analysis = state?.analysis as AnalysisResponse;
-  const pdfUrl = analysis?.pdfUrl && `http://localhost:5000${analysis.pdfUrl}`;
+  const pdfUrl = analysis?.pdfUrl && `${API_BASE}${analysis.pdfUrl}`;
   const [downloading, setDownloading] = useState(false);
 
   const download = async () => {

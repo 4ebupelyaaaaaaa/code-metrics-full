@@ -16,11 +16,12 @@ import {
   RightOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import axios from "axios";
+import api from "@/shared/api/axios";
 import CustomTable from "@/UI/table/custom-table";
 import type { ColumnsType } from "antd/es/table";
 import { useAuth } from "@/pages/auth/auth-context";
 import "./user-modal.css";
+import { API_BASE } from "@/shared/constants";
 
 const { Title, Text } = Typography;
 
@@ -93,7 +94,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
     if (!visible || !userId) return;
 
     setLoading(true);
-    axios
+    api
       .get<ApiHistoryItem[]>(`/api/history/${userId}`)
       .then(({ data }) => {
         setHistory(
@@ -101,7 +102,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
             key: it.analysis_id,
             date: new Date(it.analysis_date).toLocaleDateString(),
             filename: it.project_name,
-            pdfLink: it.report_pdf,
+            pdfLink: `${API_BASE}${it.report_pdf}`,
           }))
         );
       })
