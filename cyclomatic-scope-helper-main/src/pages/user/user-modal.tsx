@@ -95,7 +95,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
     setLoading(true);
     api
-      .get<ApiHistoryItem[]>(`/api/history/${userId}`)
+      .get<ApiHistoryItem[]>(`/history/${userId}`)
       .then(({ data }) => {
         setHistory(
           data.map((it) => ({
