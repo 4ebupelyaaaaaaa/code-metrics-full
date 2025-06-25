@@ -4,7 +4,7 @@ import App from "./App";
 import { ConfigProvider } from "antd";
 import ruRU from "antd/locale/ru_RU";
 import "./index.css";
-import "./app.css";
+import "./App.css";
 import { ANT_THEME } from "./config/ant-theme";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
