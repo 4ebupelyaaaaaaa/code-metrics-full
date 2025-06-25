@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "@/shared/api/axios";
 
 export interface HistoryItem {
   analysis_id: number;
@@ -15,8 +15,6 @@ export interface HistoryItem {
 export const getUserHistory = async (
   userId: number
 ): Promise<HistoryItem[]> => {
-  const response = await axios.get(
-    `http://localhost:5000/api/history/${userId}`
-  );
+  const response = await api.get(`/history/${userId}`);
   return response.data;
 };

@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "@/shared/api/axios";
 
 export interface HistoryRecord {
   project_name: string;
@@ -10,5 +10,5 @@ export const saveToHistory = async (
   userId: number,
   data: HistoryRecord
 ): Promise<void> => {
-  await axios.post(`/api/history/${userId}`, data);
+  await api.post(`/history/${userId}`, data);
 };
