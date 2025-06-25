@@ -1,5 +1,5 @@
 // src/shared/api/get-report.ts
-import api from "./axios";
+import api from "@/shared/api/axios";
 import type { ReportPayload } from "@/utils/build-report-payload";
 
 export interface AnalysisResponse {
