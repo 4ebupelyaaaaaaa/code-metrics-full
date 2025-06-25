@@ -18,7 +18,7 @@ export async function fetchAnalysisReport(
   formData.append("options", JSON.stringify(options));
 
   const { data } = await api.post<AnalysisResponse>(
-    "/api/report/report",
+    "/report/report",
     formData,
     { headers: { "Content-Type": "multipart/form-data" } }
   );
