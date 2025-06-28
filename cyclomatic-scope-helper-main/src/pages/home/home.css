@@ -70,3 +70,21 @@
   max-width: 800px;
   margin: 0 auto;
 }
+
+@media (max-width: 480px) {
+  .home-container {
+    padding: 20px;
+  }
+
+  .gradient-title {
+    font-size: 32px;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    font-size: 20px;
+    max-width: 280px;
+    margin-bottom: 24px;
+  }
+}

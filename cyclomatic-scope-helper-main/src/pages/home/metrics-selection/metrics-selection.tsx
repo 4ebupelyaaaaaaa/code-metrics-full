@@ -8,6 +8,7 @@ import { fetchAnalysisReport } from "@/shared/api/get-report";
 import { buildReportPayload } from "@/utils/build-report-payload";
 import { useAuth } from "@/pages/auth/auth-context";
 import { saveToHistory } from "@/shared/api/save-to-history";
+import "./metrics-selection.css";
 
 const { TabPane } = Tabs;
 

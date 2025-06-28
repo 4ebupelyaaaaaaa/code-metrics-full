@@ -49,7 +49,7 @@ const DistributionChartsList: React.FC<Props> = ({ analysis }) => {
 
         const options: Highcharts.Options = {
           chart: {
-            type: "column",
+            type: "bar",
             backgroundColor: "rgba(255, 255, 255, 0.0)",
             borderRadius: 16,
             height: 300,
