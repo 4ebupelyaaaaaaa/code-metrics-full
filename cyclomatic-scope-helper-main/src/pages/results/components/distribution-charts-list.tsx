@@ -78,7 +78,7 @@ const DistributionChartsList: React.FC<Props> = ({ analysis }) => {
           },
           series: [
             {
-              name: metricLabels[key],
+              name: "Количество файлов/функций",
               data: data.map((d) => Number(d[categoryField])),
             },
           ] as Highcharts.SeriesOptionsType[],
