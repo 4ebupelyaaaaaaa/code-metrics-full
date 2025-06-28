@@ -71,6 +71,18 @@ const DistributionChartsList: React.FC<Props> = ({ analysis }) => {
             labels: { style: { color: "#fff" } },
             gridLineColor: "rgba(255,255,255,0.2)",
           },
+          tooltip: {
+            backgroundColor: "rgba(0,0,0,0.85)",
+            borderRadius: 6,
+            style: { color: "#fff" },
+            headerFormat:
+              '<span style="font-size: 13px;"><b>' +
+              metricLabels[key] +
+              ": {point.key}</b></span><br/>",
+            pointFormat:
+              '<span style="font-size: 12px;">Количество файлов/функций: <b>{point.y}</b></span>',
+            useHTML: true,
+          },
           legend: {
             itemStyle: {
               color: "#fff",
@@ -78,7 +90,7 @@ const DistributionChartsList: React.FC<Props> = ({ analysis }) => {
           },
           series: [
             {
-              name: "Количество файлов/функций",
+              name: metricLabels[key],
               data: data.map((d) => Number(d[categoryField])),
             },
           ] as Highcharts.SeriesOptionsType[],
