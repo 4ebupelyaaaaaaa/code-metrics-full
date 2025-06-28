@@ -49,7 +49,7 @@ const DistributionChartsList: React.FC<Props> = ({ analysis }) => {
 
         const options: Highcharts.Options = {
           chart: {
-            type: "bar",
+            type: "column",
             backgroundColor: "rgba(255, 255, 255, 0.0)",
             borderRadius: 16,
             height: 300,
@@ -59,7 +59,7 @@ const DistributionChartsList: React.FC<Props> = ({ analysis }) => {
             margin: 0,
           },
           xAxis: {
-            categories: data.map((d) => String(d[categoryField])),
+            categories: data.map((d) => String(d[valueField])),
             labels: { style: { color: "#fff" } },
             lineColor: "#fff",
           },
@@ -79,7 +79,7 @@ const DistributionChartsList: React.FC<Props> = ({ analysis }) => {
           series: [
             {
               name: metricLabels[key],
-              data: data.map((d) => Number(d[valueField])),
+              data: data.map((d) => Number(d[categoryField])),
             },
           ] as Highcharts.SeriesOptionsType[],
           credits: { enabled: false },
