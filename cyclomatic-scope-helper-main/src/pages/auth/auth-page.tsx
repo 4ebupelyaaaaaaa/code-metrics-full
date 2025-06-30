@@ -33,7 +33,7 @@ const AuthPage: React.FC = () => {
     } catch (error: any) {
       const msg =
         error.response?.data?.error || "Ошибка при входе. Попробуйте снова.";
-      message.error(msg); // ✅ показать сообщение пользователю
+      message.error(msg);
     }
   };
 
@@ -62,7 +62,6 @@ const AuthPage: React.FC = () => {
             layout="vertical"
             requiredMark={false}
           >
-            {/* Поле «Логин» */}
             <Form.Item name="username" rules={usernameRules}>
               <Input
                 size="large"
@@ -71,7 +70,6 @@ const AuthPage: React.FC = () => {
               />
             </Form.Item>
 
-            {/* Поле «Пароль» */}
             <Form.Item name="password" rules={passwordRules}>
               <Input.Password
                 size="large"

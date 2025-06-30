@@ -35,12 +35,10 @@ export default function ResultsPage() {
   return (
     <div className="results-wrapper">
       {sections.map((sec) => {
-        // Поддерживаем как старый cardKey, так и новый cardKeys
         const cardKeys: Array<keyof AnalysisResponse> =
           (sec.cardKeys as Array<keyof AnalysisResponse>) ||
           (sec.cardKey ? [sec.cardKey] : []);
 
-        // отфильтровываем ключи, для которых есть данные
         const availableCards = cardKeys.filter((key) => analysis[key] != null);
         const hasCard = availableCards.length > 0;
 

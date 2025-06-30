@@ -32,7 +32,7 @@ const RegisterPage: React.FC = () => {
       const msg =
         error.response?.data?.error ||
         "Ошибка при регистрации. Попробуйте позже.";
-      message.error(msg); // ✅ отобразить ошибку пользователю
+      message.error(msg);
     }
   };
 
@@ -61,7 +61,6 @@ const RegisterPage: React.FC = () => {
             layout="vertical"
             requiredMark={false}
           >
-            {/* Поле «Логин» */}
             <Form.Item name="username" rules={usernameRules}>
               <Input
                 size="large"
@@ -70,7 +69,6 @@ const RegisterPage: React.FC = () => {
               />
             </Form.Item>
 
-            {/* Поле «Пароль» */}
             <Form.Item name="password" rules={passwordRules}>
               <Input.Password
                 size="large"

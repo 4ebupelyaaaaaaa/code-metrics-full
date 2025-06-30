@@ -1,4 +1,3 @@
-// src/pages/results/components/InfoCardList.tsx
 import React from "react";
 import InfoCard from "@/UI/info-card/info-card";
 import TagOutline from "@/UI/tag-outline";
@@ -58,7 +57,6 @@ const allKeys: CardKey[] = [
 ];
 
 const InfoCardList: React.FC<Props> = ({ analysis }) => {
-  // Определяем ключи карточек, для которых есть данные
   const availableKeys = allKeys.filter((key) => analysis[key] != null);
   const multiple = availableKeys.length > 1;
 

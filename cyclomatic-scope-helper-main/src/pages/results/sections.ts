@@ -1,4 +1,3 @@
-// src/pages/results/sections.ts
 import type { AnalysisResponse } from "@/shared/api/get-report";
 
 export interface SectionConfig {

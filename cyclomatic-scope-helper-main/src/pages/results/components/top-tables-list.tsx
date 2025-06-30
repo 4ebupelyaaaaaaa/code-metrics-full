@@ -1,4 +1,3 @@
-// src/pages/results/components/TopTablesList.tsx
 import React from "react";
 import CustomTable from "@/UI/table/custom-table";
 import type { AnalysisResponse } from "@/shared/api/get-report";

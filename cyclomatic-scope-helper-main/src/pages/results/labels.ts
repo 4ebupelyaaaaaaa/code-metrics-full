@@ -1,3 +1,4 @@
+//отрефакторить, дублирование лейблов
 export const metricLabels: Record<string, string> = {
   avgComplexity: "Среднее значение когнитивной сложности",
   avgCyclomatic: "Среднее значение цикломатической сложности",

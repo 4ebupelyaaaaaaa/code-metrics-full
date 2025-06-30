@@ -6,9 +6,9 @@
 }
 
 .results-section {
-  margin-bottom: 24px !important; /* <-- снова даём внешнего отступа */
-  padding-bottom: 34px !important; /* <-- небольшой внутренний отсуп до линии */
-  position: relative; /* для псевдоэлемента */
+  margin-bottom: 24px !important;
+  padding-bottom: 34px !important;
+  position: relative;
 }
 
 .results-section:not(:last-child)::after {

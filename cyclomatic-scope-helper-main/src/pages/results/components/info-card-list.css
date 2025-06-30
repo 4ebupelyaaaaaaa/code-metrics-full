@@ -1,18 +1,14 @@
-/* src/pages/results/components/InfoCardList.css */
-
 .card-list {
   display: flex !important;
   flex-wrap: wrap !important;
   gap: 24px !important;
 }
 
-/* Когда одна карточка — растягиваем на всю ширину контейнера */
 .card-list:not(.multiple) .card-block {
   flex: 1 1 100% !important;
   max-width: none !important;
 }
 
-/* Когда несколько карточек — выводим их в ряд и ограничиваем ширину */
 .card-list.multiple .card-block {
   flex: 1 1 200px !important;
   min-width: 180px !important;

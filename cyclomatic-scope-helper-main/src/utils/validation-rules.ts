@@ -1,11 +1,5 @@
-// src/utils/validation-rules.ts
-
 import { Rule } from "antd/es/form";
 
-// Правило для поля «Логин»:
-// • обязателен
-// • длина от 3 до 20 символов
-// • только буквы, цифры и подчёркивание
 export const usernameRules: Rule[] = [
   { required: true, message: "Введите логин" },
   { min: 3, max: 20, message: "Логин должен содержать от 3 до 20 символов" },
@@ -15,10 +9,6 @@ export const usernameRules: Rule[] = [
   },
 ];
 
-// Правило для поля «Пароль»:
-// • обязателен
-// • минимум 6 символов
-// • должен содержать минимум одну букву и одну цифру
 export const passwordRules: Rule[] = [
   { required: true, message: "Введите пароль" },
   { min: 6, message: "Пароль должен быть не менее 6 символов" },
