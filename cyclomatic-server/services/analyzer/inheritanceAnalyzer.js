@@ -1,6 +1,6 @@
 const parser = require("@babel/parser");
 const traverse = require("@babel/traverse").default;
-const { getFunctionName } = require("../../utils/functionUtils"); // Импортируем утилиту
+const { getFunctionName } = require("../../utils/functionUtils");
 
 // Узлы «класс»
 const CLASS_NODES = new Set(["ClassDeclaration", "ClassExpression"]);
@@ -36,21 +36,20 @@ function safeParse(code) {
   return parser.parse(code, {
     sourceType: "module",
     plugins: [
-      "decorators-legacy", // декораторы
-      "classProperties", // публичные поля
-      "classPrivateProperties", // приватные поля
-      "typescript", // TS-синтаксис
-      "jsx", // JSX
-      "optionalChaining", // ?.
-      "nullishCoalescingOperator", // ??.
-      "numericSeparator", // 1_000
-      "topLevelAwait", // await на верхнем уровне
+      "decorators-legacy",
+      "classProperties",
+      "classPrivateProperties",
+      "typescript",
+      "jsx",
+      "optionalChaining",
+      "nullishCoalescingOperator",
+      "numericSeparator",
+      "topLevelAwait",
     ],
   });
 }
 
 function analyzeInheritance(files) {
-  // 1. Собираем глобальную карту всех классов
   const globalClassMap = new Map();
 
   for (const { code } of files) {
@@ -58,18 +57,17 @@ function analyzeInheritance(files) {
     try {
       ast = safeParse(code);
     } catch {
-      continue; // пропускаем «сложные» файлы
+      continue;
     }
     traverse(ast, {
       enter(path) {
         if (!CLASS_NODES.has(path.node.type)) return;
-        const cname = getFunctionName(path); // Используем getFunctionName для получения имени класса
+        const cname = getFunctionName(path);
         globalClassMap.set(cname, path.node);
       },
     });
   }
 
-  // 2. Для каждого файла считаем глубину
   const results = [];
   for (const { name, code } of files) {
     let ast;
@@ -84,7 +82,7 @@ function analyzeInheritance(files) {
     traverse(ast, {
       enter(path) {
         if (!CLASS_NODES.has(path.node.type)) return;
-        localClasses.push({ name: getFunctionName(path), node: path.node }); // Используем getFunctionName
+        localClasses.push({ name: getFunctionName(path), node: path.node });
       },
     });
 
@@ -98,7 +96,7 @@ function analyzeInheritance(files) {
         if (globalClassMap.has(superName)) {
           sc = globalClassMap.get(superName).superClass;
         } else {
-          break; // внешний — React.Component, etc.
+          break;
         }
       }
       return { name: cname, depth };
@@ -112,4 +110,3 @@ function analyzeInheritance(files) {
 }
 
 module.exports = { analyzeInheritance };
-

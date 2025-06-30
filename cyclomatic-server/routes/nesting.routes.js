@@ -1,4 +1,3 @@
-// routes/duplication.routes.js
 const express = require("express");
 const multer = require("multer");
 const unzipper = require("unzipper");
@@ -24,7 +23,7 @@ router.post("/duplication", upload.single("archive"), async (req, res) => {
     });
   }
 
-  // Разбираем опции: какие поля вернуть
+  // Разбираем опции
   let optionsObj;
   try {
     optionsObj = JSON.parse(req.body.options || "{}");
@@ -43,7 +42,7 @@ router.post("/duplication", upload.single("archive"), async (req, res) => {
 
   const tmpPath = req.file.path;
   try {
-    // 1. Собираем файлы
+    // Собираем файлы
     const files = [];
     const orig = req.file.originalname.toLowerCase();
     if (orig.endsWith(".zip")) {
@@ -58,16 +57,15 @@ router.post("/duplication", upload.single("archive"), async (req, res) => {
       files.push({ name: req.file.originalname, code });
     }
 
-    // 2. Анализ дублирования
+    // Анализ дублирования
     const { duplicatedLines, duplicationPercentage, duplicates } =
       analyzeDuplication(files);
 
-    // 3. Берём топ-25 дубликатов по количеству
+    // Топ-25
     const topDuplicates = duplicates
       .sort((a, b) => b.count - a.count)
       .slice(0, 25);
 
-    // 4. Генерируем PDF
     const reportsDir = path.join(__dirname, "../static/reports");
     if (!fs.existsSync(reportsDir)) {
       fs.mkdirSync(reportsDir, { recursive: true });
@@ -82,7 +80,6 @@ router.post("/duplication", upload.single("archive"), async (req, res) => {
       chartData: [], // нет графика
     });
 
-    // 5. Формируем ответ только с нужными полями
     const response = { success: true, pdfUrl: `/static/reports/${pdfName}` };
 
     if (reports.includes("duplicatedLines")) {

@@ -1,14 +1,11 @@
-// app.js
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const db = require("./models/index");
 
-// Аутентификация
 const { router: authRouter, authCheck } = require("./routes/auth.routes");
 
-// Наши новые роуты
 const cyclomaticRouter = require("./routes/cyclomatic.routes");
 const nestingRouter = require("./routes/nesting.routes");
 const depthRouter = require("./routes/depth.routes");
@@ -21,26 +18,20 @@ const historyRouter = require("./routes/history.routes.js");
 const reportRouter = require("./routes/report.routes.js");
 const app = express();
 
-// CORS — разрешаем фронту обращаться к API
 app.use(
   cors({
-    origin: "http://localhost:8080", // адрес вашего фронта
+    origin: "http://localhost:8080",
     credentials: true,
   })
 );
 
-// Для парсинга JSON в теле запроса
 app.use(express.json());
 
-// --- Маршруты аутентификации ---
 app.use("/api/auth", authRouter);
 app.get("/api/protected", authCheck, (req, res) => {
   res.json({ message: `Вы вошли как ${req.user.login}` });
 });
 
-// --- Маршруты для отчётов ---
-// POST /api/report/cyclomatic  — анализ цикломатической сложности
-// POST /api/report/nesting     — анализ глубины вложенности
 app.use("/api/report", cyclomaticRouter);
 app.use("/api/report", nestingRouter);
 app.use("/api/report", depthRouter);
@@ -53,13 +44,12 @@ app.use("/api/report", readabilityRouter);
 app.use("/api/history", historyRouter);
 app.use("/api/report", reportRouter);
 
-// Статика для скачивания PDF
 app.use(
   "/static/reports",
   express.static(path.join(__dirname, "static/reports"))
 );
 
-// Синхронизация с БД и запуск сервера
+// Синхронизация с БД
 const PORT = process.env.PORT || 5000;
 db.sequelize.sync().then(() => {
   console.log("DB connected and synced");

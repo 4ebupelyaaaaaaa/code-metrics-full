@@ -1,4 +1,3 @@
-// services/analyzer/codeAnalyzer.js
 const path = require("path");
 const parser = require("@babel/parser");
 const traverse = require("@babel/traverse").default;
@@ -71,7 +70,7 @@ function analyzeCode(source, filename) {
   const results = [];
   traverse(ast, {
     Function(path) {
-      const name = getFunctionName(path); // получаем имя через утилиту
+      const name = getFunctionName(path);
       const cc = computeCyclomatic(path.get("body"));
       if (cc > CC_THRESHOLD)
         results.push({ name, cyclomaticComplexity: cc, file: filename });

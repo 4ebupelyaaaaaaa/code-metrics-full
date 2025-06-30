@@ -1,6 +1,4 @@
-// models/user.model.js
 module.exports = (sequelize, DataTypes) => {
-  // 1) User
   const User = sequelize.define(
     "User",
     {
@@ -26,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  // 2) AnalysisHistory (ссылка на PDF — строка)
   const AnalysisHistory = sequelize.define(
     "AnalysisHistory",
     {
@@ -65,7 +62,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  // 3) Ассоциации
   User.hasMany(AnalysisHistory, { foreignKey: "user_id", as: "history" });
   AnalysisHistory.belongsTo(User, { foreignKey: "user_id", as: "user" });
 

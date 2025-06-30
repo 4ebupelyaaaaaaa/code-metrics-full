@@ -1,4 +1,3 @@
-// routes/readability.routes.js
 const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
@@ -22,7 +21,7 @@ router.post("/readability", upload.single("archive"), async (req, res) => {
     return res.status(400).json({ success: false, error: "Нет поля archive" });
   }
 
-  // Разбираем опции: какие поля возвращать
+  // Разбираем опции
   let optionsObj;
   try {
     optionsObj = JSON.parse(req.body.options || "{}");
@@ -41,7 +40,7 @@ router.post("/readability", upload.single("archive"), async (req, res) => {
 
   const tmpPath = req.file.path;
   try {
-    // 1. Извлекаем или читаем файлы
+    // Читаем файлы
     const orig = req.file.originalname.toLowerCase();
     const files = orig.endsWith(".zip")
       ? await extractFilesFromArchive(tmpPath)
@@ -49,20 +48,20 @@ router.post("/readability", upload.single("archive"), async (req, res) => {
       ? readFile(tmpPath)
       : [readFile(tmpPath)];
 
-    // 2. Анализ читабельности
+    // Анализ читабельности
     const results = analyzeReadability(files);
 
-    // 3. Средний score
+    // Среднее значение
     const avgReadability =
       results.reduce((sum, r) => sum + r.score, 0) / (results.length || 1);
 
-    // 4. Топ-5 худших (lowest) по score
+    // Топ-5 худших
     const top5Readability = results
       .sort((a, b) => a.score - b.score)
       .slice(0, 5)
       .map((r) => ({ file: r.file, score: r.score }));
 
-    // 5. Распределение по диапазонам
+    //График
     const buckets = results.reduce((acc, r) => {
       const start = Math.floor(r.score / 10) * 10;
       const key = `${start}-${start + 9}`;
@@ -74,7 +73,6 @@ router.post("/readability", upload.single("archive"), async (req, res) => {
       count,
     }));
 
-    // 6. Генерируем PDF
     const reportsDir = path.join(__dirname, "../static/reports");
     if (!fs.existsSync(reportsDir))
       fs.mkdirSync(reportsDir, { recursive: true });
@@ -88,7 +86,6 @@ router.post("/readability", upload.single("archive"), async (req, res) => {
       chartData,
     });
 
-    // 7. Формируем ответ только с нужными полями
     const response = { success: true, pdfUrl: `/static/reports/${pdfName}` };
 
     if (reports.includes("avgReadability")) {

@@ -1,10 +1,9 @@
-// routes/maintainability.routes.js
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const PDFDocument = require("pdfkit");
-const { extractFilesFromArchive, readFile } = require("../utils/fileUtils"); // Импорт утилиты
+const { extractFilesFromArchive, readFile } = require("../utils/fileUtils");
 const {
   analyzeMaintainability,
   MI_THRESHOLD,

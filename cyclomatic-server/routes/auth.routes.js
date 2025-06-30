@@ -4,16 +4,13 @@ const jwt = require("jsonwebtoken");
 const db = require("../models");
 const User = db.User;
 
-
 const JWT_SECRET = process.env.JWT_SECRET;
 const TOKEN_EXPIRES = "1h";
 
-// Регистрация
 router.post("/register", async (req, res) => {
   try {
     const { login, password } = req.body;
 
-    // проверка занятости login
     if (await User.findOne({ where: { login } })) {
       return res.status(409).json({ error: "Login уже занят" });
     }
@@ -32,7 +29,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Вход
 router.post("/login", async (req, res) => {
   try {
     const { login, password } = req.body;
@@ -57,7 +53,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Middleware проверки токена
 function authCheck(req, res, next) {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith("Bearer ")) {

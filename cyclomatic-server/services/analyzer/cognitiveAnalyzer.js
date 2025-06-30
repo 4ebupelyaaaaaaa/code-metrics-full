@@ -1,10 +1,9 @@
-// services/analyzer/cognitiveAnalyzer.js
 const parser = require("@babel/parser");
 const traverse = require("@babel/traverse").default;
 const {
   getFunctionName,
   FUNCTION_NODES,
-} = require("../../utils/functionUtils"); // импортируем утилиту
+} = require("../../utils/functionUtils");
 
 // Узлы, которые добавляют к когнитивной сложности
 const COGNITIVE_NODES = new Set([
@@ -44,7 +43,6 @@ function analyzeCognitive(files) {
 
     traverse(ast, {
       enter(path) {
-        // 0) не учитываем inline-callback'и, не привязанные к переменным:
         if (
           (path.isArrowFunctionExpression() || path.isFunctionExpression()) &&
           path.parentPath.isCallExpression() &&
@@ -53,10 +51,8 @@ function analyzeCognitive(files) {
           return path.skip();
         }
 
-        // 1) только наши узлы-функции
         if (!FUNCTION_NODES.has(path.node.type)) return;
 
-        // получаем имя через утилиту
         const fname = getFunctionName(path);
 
         let complexity = 0;
@@ -98,7 +94,6 @@ function analyzeCognitive(files) {
           },
         });
 
-        // минимум 1 за саму функцию
         funcs.push({ name: fname, complexity: complexity + 1 });
       },
     });

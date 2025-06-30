@@ -1,4 +1,3 @@
-// routes/report.routes.js
 const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
@@ -57,7 +56,6 @@ router.post("/report", upload.single("archive"), async (req, res) => {
       .json({ success: false, error: "Не выбраны метрики для анализа" });
   }
 
-  // Если projectName не передан, берём из имени файла (без расширения)
   let projectName = optName;
   if (!projectName) {
     const original = req.file.originalname;
@@ -66,7 +64,7 @@ router.post("/report", upload.single("archive"), async (req, res) => {
 
   const tmpPath = req.file.path;
   try {
-    // 1. Извлекаем или читаем одиночный файл
+    // Извлекаем или читаем одиночный файл
     const orig = req.file.originalname.toLowerCase();
     let files = [];
     if (orig.endsWith(".zip")) {
@@ -76,7 +74,7 @@ router.post("/report", upload.single("archive"), async (req, res) => {
       files = Array.isArray(single) ? single : [single];
     }
 
-    // 2. Запускаем все анализаторы
+    // Запускаем все анализаторы
     const cogRes = analyzeCognitive(files);
     const commRes = analyzeComments(files);
 
@@ -91,9 +89,9 @@ router.post("/report", upload.single("archive"), async (req, res) => {
     const maintRes = analyzeMaintainability(files);
     const depthRes = analyzeDepth(files);
 
-    // 3. Готовим все возможные данные
+    // Готовим все возможные данные
 
-    // 3.1 когнитивная сложность
+    // когнитивная сложность
     const avgComplexity =
       cogRes.reduce((s, r) => s + r.avgComplexity, 0) / (cogRes.length || 1);
 
@@ -108,7 +106,7 @@ router.post("/report", upload.single("archive"), async (req, res) => {
       .sort((a, b) => b.complexity - a.complexity)
       .slice(0, 10);
 
-    // 3.2 цикломатическая сложность
+    // цикломатическая сложность
     cycloRes.sort((a, b) => b.cyclomaticComplexity - a.cyclomaticComplexity);
     const avgCyclomatic =
       cycloRes.reduce((s, f) => s + f.cyclomaticComplexity, 0) /
@@ -123,7 +121,7 @@ router.post("/report", upload.single("archive"), async (req, res) => {
         Файл: file,
       }));
 
-    // 3.3 коэффициент комментариев
+    // коэффициент комментариев
     const totalLines = commRes.reduce((s, r) => s + r.totalLines, 0);
     const totalComments = commRes.reduce((s, r) => s + r.commentLines, 0);
     const commentRatio =
@@ -139,7 +137,7 @@ router.post("/report", upload.single("archive"), async (req, res) => {
         "Процент комментариев": ratio.toFixed(2),
       }));
 
-    // 3.4 дублирование
+    // дублирование
     const { duplicationPercentage, duplicates } = dupRes;
     const topDuplicates = duplicates
       .slice()
@@ -151,7 +149,7 @@ router.post("/report", upload.single("archive"), async (req, res) => {
         "Списки файлов": files.join(", "),
       }));
 
-    // 3.5 читабельность
+    // читабельность
     const avgReadability =
       readRes.reduce((s, r) => s + r.score, 0) / (readRes.length || 1);
     const top5Readability = readRes
@@ -163,7 +161,7 @@ router.post("/report", upload.single("archive"), async (req, res) => {
         "Оценка читабельности": score.toFixed(2),
       }));
 
-    // 3.6 индекс ремонтопригодности (MI)
+    // индекс ремонтопригодности (MI)
     const avgMI =
       maintRes.reduce((s, r) => s + r.mi, 0) / (maintRes.length || 1);
     const top5Maintainability = maintRes
@@ -175,7 +173,7 @@ router.post("/report", upload.single("archive"), async (req, res) => {
         "Индекс ремонтопригодности (MI)": mi.toFixed(2),
       }));
 
-    // 3.7 наследование
+    // наследование
     const allClasses = inhRes.flatMap((r) => r.classes);
     const maxInheritance = inhRes.reduce((m, r) => Math.max(m, r.maxDepth), 0);
     const isFunctionalOnly = inhRes.every((r) => r.classes.length === 0);
@@ -190,13 +188,12 @@ router.post("/report", upload.single("archive"), async (req, res) => {
         Файл: file,
       }));
 
-    // 3.8 глубина вложенности
-    // Здесь заменили r.name на r.file (имя файла хранится в поле file)
+    // глубина вложенности
     const allFuncs = depthRes.flatMap((r) =>
       r.functions.map((f) => ({
         name: f.name,
         depth: f.depth,
-        file: r.file, // исправлено: раньше было r.name → undefined
+        file: r.file,
       }))
     );
     const maxDepth = depthRes.reduce((m, r) => Math.max(m, r.maxDepth), 0);
@@ -210,7 +207,7 @@ router.post("/report", upload.single("archive"), async (req, res) => {
         Файл: file,
       }));
 
-    // 3.9 вспомогатель для распределений
+    // вспомогатель для распределений (графиков)
     const makeDist = (arr, key) => {
       const map = {};
       arr.forEach((item) => {
@@ -263,7 +260,7 @@ router.post("/report", upload.single("archive"), async (req, res) => {
       return acc;
     }, {});
 
-    // 4. Собираем секции по ключам из options.reports, но с русскими заголовками:
+    // Собираем секции по ключам из options.reports, но с русскими заголовками для пдф
     const sections = reports
       .map((key) => {
         switch (key) {
@@ -309,7 +306,6 @@ router.post("/report", upload.single("archive"), async (req, res) => {
               data: maxDepth,
             };
 
-          // ===== таблицы (списки с объектами) =====
           case "top5Complexity":
             return {
               heading: "Функции с высокой когнитивной сложностью",
@@ -350,8 +346,6 @@ router.post("/report", upload.single("archive"), async (req, res) => {
               heading: "Список функций с превышением глубины вложенности",
               data: top5Depth,
             };
-
-          // ===== графики (распределения) =====
           case "distributionComplexity":
             return {
               heading: "Распределение когнитивной сложности",
@@ -405,7 +399,7 @@ router.post("/report", upload.single("archive"), async (req, res) => {
       })
       .filter(Boolean);
 
-    // 5. Генерируем PDF
+    // Генерируем PDF
     const reportsDir = path.join(__dirname, "../static/reports");
     if (!fs.existsSync(reportsDir)) {
       fs.mkdirSync(reportsDir, { recursive: true });
@@ -413,14 +407,12 @@ router.post("/report", upload.single("archive"), async (req, res) => {
     const pdfName = `${Date.now()}-full-report.pdf`;
     const pdfPath = path.join(reportsDir, pdfName);
 
-    // Передаём projectName и sections (с заголовками уже на русском)
     await savePdf(pdfPath, {
       title: "Отчёт по проекту",
       projectName,
       sections,
     });
 
-    // 6. Отправляем ответ
     const response = { success: true, pdfUrl: `/static/reports/${pdfName}` };
     reports.forEach((key) => {
       switch (key) {
@@ -443,7 +435,6 @@ router.post("/report", upload.single("archive"), async (req, res) => {
           response.distributionCyclomatic = distributionCyclomatic;
           break;
         case "commentRatio":
-          // запоминаем как строку с % на конце
           response.commentRatio = `${commentRatio.toFixed(2)}%`;
           break;
         case "top5Comment":
@@ -453,7 +444,6 @@ router.post("/report", upload.single("archive"), async (req, res) => {
           response.distributionComment = Object.entries(
             distributionComment
           ).map(([r, c]) => ({
-            // добавляем '%' к каждому диапазону
             range: `${r}%`,
             count: c,
           }));

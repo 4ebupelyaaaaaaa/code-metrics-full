@@ -56,7 +56,6 @@ function calcNamingRatio(ast) {
   return total ? camel / total : 0;
 }
 
-// Основная функция
 function analyzeReadability(files) {
   return files.map(({ name, code }) => {
     let ast;
@@ -69,18 +68,17 @@ function analyzeReadability(files) {
       return { file: name, score: 0 };
     }
 
-    const lineRatio = calcLineLengthRatio(code); // L
-    const { avg: avgDepth } = calcAvgDepth(ast); // D
+    const lineRatio = calcLineLengthRatio(code);
+    const { avg: avgDepth } = calcAvgDepth(ast);
     const maxAllowedDepth = 5;
-    const depthScore = 1 - Math.min(avgDepth / maxAllowedDepth, 1); // нормировано
+    const depthScore = 1 - Math.min(avgDepth / maxAllowedDepth, 1);
 
     const commentLines = (code.match(/\/\/|\/\*|\*\//g) || []).length;
     const totalLines = code.split("\n").length;
-    const commentRatio = totalLines ? commentLines / totalLines : 0; // C
+    const commentRatio = totalLines ? commentLines / totalLines : 0;
 
-    const namingRatio = calcNamingRatio(ast); // N
+    const namingRatio = calcNamingRatio(ast);
 
-    // итоговый score
     const score =
       100 *
       (0.3 * lineRatio +
@@ -90,7 +88,7 @@ function analyzeReadability(files) {
 
     return {
       file: name,
-      score: Math.round(score * 100) / 100, // округлим до 2 знаков
+      score: Math.round(score * 100) / 100,
     };
   });
 }

@@ -1,4 +1,3 @@
-// routes/cyclomatic.routes.js
 const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
@@ -23,7 +22,7 @@ router.post("/cyclomatic", upload.single("archive"), async (req, res) => {
     });
   }
 
-  // Разбираем опции: какие поля возвращать
+  // Разбираем опции
   let optionsObj;
   try {
     optionsObj = JSON.parse(req.body.options || "{}");
@@ -42,19 +41,19 @@ router.post("/cyclomatic", upload.single("archive"), async (req, res) => {
 
   const tmpPath = req.file.path;
   try {
-    // 1. Собираем файлы
+    // Собираем файлы
     const orig = req.file.originalname.toLowerCase();
     const files = orig.endsWith(".zip")
       ? await extractFilesFromArchive(tmpPath)
       : readFile(tmpPath);
 
-    // 2. Анализ цикломатической сложности
+    // Анализ цикломатической сложности
     let results = [];
     for (const f of files) {
       results = results.concat(analyzeCode(f.code, f.name));
     }
 
-    // 3. Сортируем и вычисляем avg
+    // Вычисляем среднее
     results.sort((a, b) => b.cyclomaticComplexity - a.cyclomaticComplexity);
     const top5Cyclomatic = results.slice(0, 5);
     const avgCyclomatic =
@@ -63,7 +62,7 @@ router.post("/cyclomatic", upload.single("archive"), async (req, res) => {
           results.length
         : 0;
 
-    // 4. Готовим chartData (distribution)
+    // Графики
     const distMap = results.reduce((acc, fn) => {
       const cc = fn.cyclomaticComplexity;
       acc[cc] = (acc[cc] || 0) + 1;
@@ -77,7 +76,6 @@ router.post("/cyclomatic", upload.single("archive"), async (req, res) => {
       .sort((a, b) => a.complexity - b.complexity)
       .slice(0, 10);
 
-    // 5. Генерируем PDF
     const reportsDir = path.join(__dirname, "../static/reports");
     if (!fs.existsSync(reportsDir)) {
       fs.mkdirSync(reportsDir, { recursive: true });
@@ -92,7 +90,6 @@ router.post("/cyclomatic", upload.single("archive"), async (req, res) => {
       chartData,
     });
 
-    // 6. Формируем ответ только с нужными полями
     const response = { success: true, pdfUrl: `/static/reports/${pdfName}` };
 
     if (reports.includes("avgCyclomatic")) {

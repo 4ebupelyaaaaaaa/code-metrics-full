@@ -39,13 +39,13 @@ router.post("/depth", upload.single("archive"), async (req, res) => {
   const tmpPath = req.file.path;
 
   try {
-    // 1. Распаковка или чтение одиночного файла
+    // Чтение файлов
     const origName = req.file.originalname.toLowerCase();
     const files = origName.endsWith(".zip")
       ? await extractFilesFromArchive(tmpPath)
       : readFile(tmpPath);
 
-    // 2. Анализ глубины
+    // Анализ глубины
     const results = analyzeDepth(files);
     const allFunctions = results.flatMap((r) =>
       r.functions.map((f) => ({ ...f, file: r.file }))
@@ -55,7 +55,7 @@ router.post("/depth", upload.single("archive"), async (req, res) => {
       0
     );
 
-    // 3. Считаем распределение глубин
+    // График
     const depthCounts = allFunctions.reduce((acc, f) => {
       acc[f.depth] = (acc[f.depth] || 0) + 1;
       return acc;
@@ -63,24 +63,23 @@ router.post("/depth", upload.single("archive"), async (req, res) => {
 
     const chartData = Object.entries(depthCounts)
       .map(([depth, count]) => ({
-        depth: Number(depth), // <— переименовали из complexity
+        depth: Number(depth),
         count,
       }))
       .sort((a, b) => a.depth - b.depth);
 
-    // 4. Отбираем топ-5 по глубине (threshold по-прежнему действует)
+    // Топ-5 по глубине
     const top5Depth = allFunctions
       .filter((f) => f.depth > threshold)
       .sort((a, b) => b.depth - a.depth)
       .slice(0, 5)
       .map((f) => ({ name: f.name, depth: f.depth, file: f.file }));
 
-    // 5. Формируем тело PDF
     const reportData = {
       title: "Отчёт по глубине вложенности",
       avg: globalMaxDepth,
       top5: top5Depth,
-      chartData, // shorthand
+      chartData,
     };
 
     const reportsDir = path.join(__dirname, "../static/reports");
@@ -90,7 +89,6 @@ router.post("/depth", upload.single("archive"), async (req, res) => {
     const pdfPath = path.join(reportsDir, pdfName);
     await savePdf(pdfPath, reportData);
 
-    // 6. Собираем ответ
     const responseJson = {
       success: true,
       pdfUrl: `/static/reports/${pdfName}`,
@@ -98,7 +96,6 @@ router.post("/depth", upload.single("archive"), async (req, res) => {
     if (reports.includes("maxDepth")) responseJson.maxDepth = globalMaxDepth;
     if (reports.includes("top5Depth")) responseJson.top5Depth = top5Depth;
     if (reports.includes("distribution")) {
-      // если в настройках пришёл distribution, отдадим его как chartData
       responseJson.chartData = chartData;
     }
 

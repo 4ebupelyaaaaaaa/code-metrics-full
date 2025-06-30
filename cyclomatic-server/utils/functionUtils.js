@@ -1,5 +1,3 @@
-// utils/functionUtils.js
-
 const FUNCTION_NODES = new Set([
   "FunctionDeclaration",
   "FunctionExpression",

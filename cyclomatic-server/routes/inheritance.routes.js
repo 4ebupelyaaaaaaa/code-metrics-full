@@ -1,4 +1,3 @@
-// routes/inheritance.routes.js
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
@@ -41,21 +40,20 @@ router.post("/inheritance", upload.single("archive"), async (req, res) => {
   const tmpPath = req.file.path;
 
   try {
-    // 1. Распаковка или чтение одиночного файла
+    // Чтение файлов
     const orig = req.file.originalname.toLowerCase();
     const files = orig.endsWith(".zip")
       ? await extractFilesFromArchive(tmpPath)
       : readFile(tmpPath);
 
-    // 2. Анализ наследования
+    // Анализ наследования
     const results = analyzeInheritance(files);
-    // Включаем имя файла в каждый класс
     const allClasses = results.flatMap((r) =>
       r.classes.map((c) => ({ ...c, file: r.file }))
     );
     const globalMax = results.reduce((m, r) => Math.max(m, r.maxDepth), 0);
 
-    // 3. Собираем топ-5 и распределение
+    // Топ-5
     const top5Inheritance = allClasses
       .filter((c) => c.depth > threshold)
       .sort((a, b) => b.depth - a.depth)
@@ -77,42 +75,12 @@ router.post("/inheritance", upload.single("archive"), async (req, res) => {
       }))
       .sort((a, b) => a.inheritance - b.inheritance);
 
-    // 4. Генерация PDF (pdfkit или ваша реализация)
     const reportsDir = path.join(__dirname, "../static/reports");
     if (!fs.existsSync(reportsDir)) {
       fs.mkdirSync(reportsDir, { recursive: true });
     }
     const pdfName = `${Date.now()}-inheritance-report.pdf`;
-    const pdfPath = path.join(reportsDir, pdfName);
-    // Здесь вставьте код генерации PDF, использующий top5Inheritance и chartData
-    // Например, используя pdfkit:
-    //
-    // const PDFDocument = require("pdfkit");
-    // const doc = new PDFDocument({ margin: 50 });
-    // const ws = fs.createWriteStream(pdfPath);
-    // doc.pipe(ws);
-    // doc.fontSize(18).text("Отчёт по глубине наследования", { align: "center" }).moveDown();
-    // if (reports.includes("maxInheritance")) {
-    //   doc.fontSize(12).text(`Максимальная глубина наследования: ${globalMax}`).moveDown();
-    // }
-    // if (reports.includes("top5Inheritance")) {
-    //   doc.fontSize(14).text("Топ-5 глубоких иерархий").moveDown(0.5);
-    //   top5Inheritance.forEach(c =>
-    //     doc.fontSize(12).text(`• ${c.name} (inheritance=${c.inheritance}) — ${c.file}`)
-    //   );
-    //   doc.moveDown();
-    // }
-    // if (reports.includes("distribution")) {
-    //   doc.fontSize(14).text("Распределение глубины наследования").moveDown(0.5);
-    //   chartData.forEach(d =>
-    //     doc.fontSize(12).text(`Inheritance ${d.inheritance}: ${d.count} классов`)
-    //   );
-    //   doc.moveDown();
-    // }
-    // doc.end();
-    // await new Promise(r => ws.on("finish", r));
 
-    // 5. Формируем JSON-ответ
     const responseJson = {
       success: true,
       pdfUrl: `/static/reports/${pdfName}`,

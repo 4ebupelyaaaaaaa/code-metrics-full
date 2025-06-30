@@ -1,5 +1,3 @@
-// services/pdfGenerator.js
-
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
@@ -109,7 +107,7 @@ async function savePdf(filePath, report) {
       }
     }
 
-    // Строковые значения (например: "Проект написан в функциональном стиле...")
+    // Строковые значения
     const texts = report.sections.filter(
       (s) =>
         typeof s.data === "string" && s.heading !== "Общий процент комментариев"
@@ -145,7 +143,7 @@ async function savePdf(filePath, report) {
       }
     }
 
-    // Таблицы (ограничим до первых 10 строк)
+    // Таблицы
     const lists = report.sections.filter(
       (s) =>
         s.heading === "Список мест, где найдено дублирование" ||
@@ -205,7 +203,6 @@ async function savePdf(filePath, report) {
       cursorY += 24;
 
       let rowY = cursorY;
-      // Рисуем заголовки таблицы
       headers.forEach((h, i) => {
         const x = 50 + i * colW;
         doc
@@ -221,7 +218,6 @@ async function savePdf(filePath, report) {
       });
       rowY += headerRowH;
 
-      // Рисуем строки (до 10 штук)
       rawRows.forEach((vals, rowIndex) => {
         const rh = rowHeights[rowIndex];
         vals.forEach((val, i) => {
@@ -243,7 +239,7 @@ async function savePdf(filePath, report) {
       doc.y = cursorY;
     }
 
-    // Графики с подписями осей
+    // Графики
     const charts = report.sections.filter(
       (s) =>
         s.heading !== "Список мест, где найдено дублирование" &&
@@ -254,11 +250,11 @@ async function savePdf(filePath, report) {
 
     for (const sec of charts) {
       const chartH = 180;
-      const gap = 20; // стало меньше
-      ensureSpace(chartH + 80); // стало больше (запас под оси + подпись)
+      const gap = 20;
+      ensureSpace(chartH + 80);
 
       doc.fillColor(colors.text).fontSize(16).text(sec.heading, 50, cursorY);
-      cursorY += 36; // увеличено расстояние до графика
+      cursorY += 36;
 
       const data = sec.data;
       const labels = data.map(
@@ -278,7 +274,6 @@ async function savePdf(filePath, report) {
 
       const yMax = 150;
 
-      // Горизонтальная сетка без чисел
       const tickCount = 5;
       for (let i = 0; i < tickCount; i++) {
         const y = chartY + yMax - (i / (tickCount - 1)) * yMax;
@@ -290,7 +285,6 @@ async function savePdf(filePath, report) {
           .stroke();
       }
 
-      // Ось Y
       doc
         .strokeColor(colors.text)
         .lineWidth(1)
@@ -298,7 +292,6 @@ async function savePdf(filePath, report) {
         .lineTo(chartX, chartY + yMax)
         .stroke();
 
-      // Вертикальный текст "Количество"
       doc
         .save()
         .rotate(-90, { origin: [chartX - 40, chartY + yMax / 2] })
@@ -310,7 +303,6 @@ async function savePdf(filePath, report) {
         })
         .restore();
 
-      // Ось X
       doc
         .strokeColor(colors.text)
         .lineWidth(1)
@@ -318,7 +310,6 @@ async function savePdf(filePath, report) {
         .lineTo(chartX + chartW, chartY + yMax)
         .stroke();
 
-      // Подпись оси X
       doc
         .fontSize(10)
         .fillColor(colors.footer)
@@ -327,7 +318,6 @@ async function savePdf(filePath, report) {
           align: "center",
         });
 
-      // Столбцы
       labels.forEach((lbl, idx) => {
         const x = chartX + idx * (barW + chartGap);
         const h = (counts[idx] / maxCount) * yMax;

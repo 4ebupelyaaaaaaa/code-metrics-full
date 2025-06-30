@@ -1,4 +1,3 @@
-// services/analyzer/depthAnalyzer.js
 const parser = require("@babel/parser");
 const traverse = require("@babel/traverse").default;
 const {
@@ -67,7 +66,7 @@ function analyzeDepth(files) {
           },
         });
 
-        funcs.push({ name: fname, depth: maxDepth, file: name }); // добавляем поле file
+        funcs.push({ name: fname, depth: maxDepth, file: name });
       },
     });
 
@@ -79,5 +78,3 @@ function analyzeDepth(files) {
 }
 
 module.exports = { analyzeDepth };
-
-

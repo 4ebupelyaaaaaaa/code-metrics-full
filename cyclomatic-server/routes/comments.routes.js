@@ -1,4 +1,3 @@
-// routes/comments.routes.js
 const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
@@ -20,7 +19,7 @@ router.post("/comments", upload.single("archive"), async (req, res) => {
     return res.status(400).json({ success: false, error: "Нет поля archive" });
   }
 
-  // Разбираем опции: список ключей, которые нужно вернуть
+  // Разбираем опции
   let optionsObj;
   try {
     optionsObj = JSON.parse(req.body.options || "{}");
@@ -39,13 +38,13 @@ router.post("/comments", upload.single("archive"), async (req, res) => {
 
   const tmpPath = req.file.path;
   try {
-    // 1. Извлекаем или читаем файлы
+    // Извлекаем файлы
     const orig = req.file.originalname.toLowerCase();
     const files = orig.endsWith(".zip")
       ? await extractFilesFromArchive(tmpPath)
       : readFile(tmpPath);
 
-    // 2. Анализ комментариев
+    // Анализ комментариев
     const results = analyzeComments(files);
     const totalLines = results.reduce((sum, r) => sum + r.totalLines, 0);
     const totalComments = results.reduce((sum, r) => sum + r.commentLines, 0);
@@ -54,14 +53,14 @@ router.post("/comments", upload.single("archive"), async (req, res) => {
         ? Number(((totalComments / totalLines) * 100).toFixed(2))
         : 0;
 
-    // 3. Топ-5 файлов с наименьшим уровнем комментариев
+    // Топ-5 файлов
     const top5Comment = results
       .slice()
       .sort((a, b) => a.ratio - b.ratio)
       .slice(0, 5)
       .map((r) => ({ file: r.file, ratio: r.ratio }));
 
-    // 4. ChartData — распределение по диапазонам
+    // Графики
     const buckets = results.reduce((acc, r) => {
       const start = Math.floor(r.ratio / 10) * 10;
       const key = `${start}-${start + 9}`;
@@ -73,7 +72,6 @@ router.post("/comments", upload.single("archive"), async (req, res) => {
       count,
     }));
 
-    // 5. Генерация PDF через общий savePdf
     const reportsDir = path.join(__dirname, "../static/reports");
     if (!fs.existsSync(reportsDir))
       fs.mkdirSync(reportsDir, { recursive: true });
@@ -87,7 +85,6 @@ router.post("/comments", upload.single("archive"), async (req, res) => {
       chartData,
     });
 
-    // 6. Формируем ответ по указанным reports
     const response = { success: true, pdfUrl: `/static/reports/${pdfName}` };
 
     if (reports.includes("commentRatio")) {

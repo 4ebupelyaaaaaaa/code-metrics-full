@@ -1,4 +1,3 @@
-// models/index.js
 const { Sequelize, DataTypes } = require("sequelize");
 const dbConfig = require("../config/db.config");
 
@@ -18,7 +17,6 @@ const db = {
   sequelize,
 };
 
-// Подключаем нашу фабрику — она вернёт обе модели
 const { User, AnalysisHistory } = require("./user.model")(sequelize, DataTypes);
 
 db.User = User;

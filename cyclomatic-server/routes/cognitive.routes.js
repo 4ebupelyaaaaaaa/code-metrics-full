@@ -1,4 +1,3 @@
-// routes/cognitive.routes.js
 const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
@@ -20,7 +19,7 @@ router.post("/cognitive", upload.single("archive"), async (req, res) => {
     return res.status(400).json({ success: false, error: "Нет поля archive" });
   }
 
-  // Разбираем опции: список ключей, которые нужно вернуть
+  // Разбираем опции
   let optionsObj;
   try {
     optionsObj = JSON.parse(req.body.options || "{}");
@@ -40,25 +39,25 @@ router.post("/cognitive", upload.single("archive"), async (req, res) => {
   const tmpPath = req.file.path;
 
   try {
-    // 1. Извлекаем файлы из архива
+    // Извлекаем файлы из архива
     const files = await extractFilesFromArchive(tmpPath);
 
-    // 2. Анализ когнитивной сложности
+    // Анализ когнитивной сложности
     const results = analyzeCognitive(files);
     const allFuncs = results.flatMap((r) => r.functions);
 
-    // 3. Вычисляем среднюю сложность
+    // Вычисляем среднюю сложность
     const globalAvg =
       results.reduce((sum, r) => sum + r.avgComplexity, 0) /
       (results.length || 1);
 
-    // 4. Составляем топ-5 функций по сложности
+    // Топ-5 функций по сложности
     const top5Complexity = allFuncs
       .sort((a, b) => b.complexity - a.complexity)
       .slice(0, 5)
       .map((f) => ({ name: f.name, complexity: f.complexity }));
 
-    // 5. Готовим данные для графика распределения
+    // Данные для графика
     const distMap = allFuncs.reduce((acc, f) => {
       acc[f.complexity] = (acc[f.complexity] || 0) + 1;
       return acc;
@@ -70,7 +69,6 @@ router.post("/cognitive", upload.single("archive"), async (req, res) => {
       }))
       .sort((a, b) => a.complexity - b.complexity);
 
-    // 6. Генерируем PDF (всегда полный)
     const reportsDir = path.join(__dirname, "../static/reports");
     if (!fs.existsSync(reportsDir)) {
       fs.mkdirSync(reportsDir, { recursive: true });
@@ -85,7 +83,6 @@ router.post("/cognitive", upload.single("archive"), async (req, res) => {
       chartData,
     });
 
-    // 7. Собираем ответ только с нужными полями
     const response = { success: true, pdfUrl: `/static/reports/${pdfName}` };
 
     if (reports.includes("avgComplexity")) {

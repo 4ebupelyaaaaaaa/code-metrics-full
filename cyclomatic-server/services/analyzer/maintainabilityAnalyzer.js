@@ -3,12 +3,11 @@ const traverse = require("@babel/traverse").default;
 const {
   getFunctionName,
   FUNCTION_NODES,
-} = require("../../utils/functionUtils"); // Импорт утилиты
+} = require("../../utils/functionUtils");
 
 // Порог MI для «низкой ремонтопригодности»
 const MI_THRESHOLD = 65;
 
-// Плагины для safeParse
 const PARSER_PLUGINS = [
   "decorators-legacy",
   "classProperties",
@@ -21,7 +20,6 @@ const PARSER_PLUGINS = [
   "topLevelAwait",
 ];
 
-// Безопасный парсинг: возвращает AST или выбрасывает
 function safeParse(code, fileName) {
   try {
     return parser.parse(code, {
@@ -44,11 +42,9 @@ function analyzeMaintainability(files) {
     try {
       ast = safeParse(code, name);
     } catch {
-      // пропускаем файл при ошибке
       continue;
     }
 
-    // Получаем имена всех функций в файле, фильтруя их через FUNCTION_NODES
     const functionNames = [];
     traverse(ast, {
       enter(path) {
@@ -62,13 +58,13 @@ function analyzeMaintainability(files) {
     let operands = [];
     let distinctOps = new Set();
     let distinctOprs = new Set();
-    let cc = 1; // цикломатическая сложность (минимум 1)
-    const loc = code.split("\n").length; // число строк
+    let cc = 1;
+    const loc = code.split("\n").length;
 
     traverse(ast, {
       enter(path) {
         const t = path.node.type;
-        // CC: +1 за каждый ветвящий/циклический узел
+        // +1 за каждый  узел
         if (
           [
             "IfStatement",
@@ -126,7 +122,7 @@ function analyzeMaintainability(files) {
     results.push({
       file: name,
       mi: Number(mi.toFixed(2)),
-      functionNames, // Добавляем имена функций в результат
+      functionNames,
     });
   }
 
