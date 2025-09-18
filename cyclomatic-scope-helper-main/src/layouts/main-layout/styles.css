@@ -8,11 +8,63 @@
   padding: 20px;
 }
 
+/* футер: выравнивание и отступы */
 .footer {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 28px;
+  gap: 12px;
+  flex-wrap: wrap;
   backdrop-filter: blur(4px);
   background: rgba(255, 255, 255, 0.05);
   mix-blend-mode: lighten;
   color: var(--foreground);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* левая часть — текст */
+.footer-left {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* правая часть — кнопка чаевых */
+.footer-right {
+  display: flex;
+  align-items: center;
+}
+
+/* эффект при наведении и фокусе */
+.tip-button:hover,
+.tip-button:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(6, 8, 35, 0.08);
+  color: #0b3b5b; /* тёмный цвет текста при наведении */
+}
+
+/* небольшая пульсация, чтобы привлечь внимание, но не переборщить */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.tip-button.pulse {
+  animation: pulse 2.2s infinite;
+}
+
+/* мобильная адаптация — в один столбец */
+@media (max-width: 520px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+  }
 }
